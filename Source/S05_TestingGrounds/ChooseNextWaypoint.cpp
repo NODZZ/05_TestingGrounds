@@ -1,9 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Thomas Corlett 2018
 
 #include "ChooseNextWaypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Classes/AIController.h"
-#include "PatrollingGuard.h" // TODO Remove Coupling
+#include "PatrolRoute.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -12,14 +12,18 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& Own
 
 	// Get patrol points
 	if (!ensure(OwnerComp.GetAIOwner()->GetPawn())) { return EBTNodeResult::Failed; }
-	APatrollingGuard* PatrollingGuard = Cast<APatrollingGuard>(OwnerComp.GetAIOwner()->GetPawn());
-
-	if (!ensure(PatrollingGuard)) { return EBTNodeResult::Failed; }
-	TArray<AActor*> PatrolPoints = PatrollingGuard->PatrolPointsCPP;
+	auto ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
+	UPatrolRoute* PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolRoute>(); // Search through pawn for component
+	if (!ensure(PatrolRoute)) { return EBTNodeResult::Failed; }
 
 	// Set next Waypoint
+	TArray<AActor*> PatrolPoints = PatrolRoute->GetPatrolPoints();
 	if (!ensure(BlackBoardComp)) { return EBTNodeResult::Failed; }
-	if (!ensure(PatrolPoints.Num() > 0)) { return EBTNodeResult::Failed; } // Handle empty patrol points array
+	if (!ensure(PatrolPoints.Num() > 0))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("A guard is missing patrol points")) // Handle empty patrol points array
+			return EBTNodeResult::Failed;
+	}
 	int Index = BlackBoardComp->GetValueAsInt(IndexKey.SelectedKeyName);
 	BlackBoardComp->SetValueAsObject(WaypointKey.SelectedKeyName, PatrolPoints[Index]);
 
