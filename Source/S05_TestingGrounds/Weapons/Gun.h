@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/InputComponent.h"
 #include "Gun.generated.h"
+
+class UInputComponent;
 
 UCLASS()
 class S05_TESTINGGROUNDS_API AGun : public AActor
@@ -47,9 +50,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
 
-protected:
-
 	/** Fires a projectile. */
 	void OnFire();
+
+protected:
+	
+	UInputComponent* InputComponent = nullptr;
+
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent);
 	
 };

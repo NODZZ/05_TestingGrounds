@@ -39,6 +39,15 @@ void AGun::Tick(float DeltaTime)
 
 }
 
+void AGun::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+	// set up gameplay key bindings
+	check(PlayerInputComponent);
+
+	// Bind fire event
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGun::OnFire);
+}
+
 void AGun::OnFire()
 {
 	// try and fire a projectile
