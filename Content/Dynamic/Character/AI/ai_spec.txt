@@ -1,4 +1,4 @@
-If you can see the enemy and in range, shoot the enemy.
-If you see the enemy and are out of range, move within range of the enemy.
-If there is no enemy but haven't visted last known location, visit that location.
+If you can see the enemy and within 300m, shoot the enemy.
+If you see the enemy and not within 300m, move within 300m of the enemy while shooting.
+If there is no enemy but haven't visited last known location, visit that location.
 Else go to next patrol point.
