@@ -4,6 +4,7 @@
 #include "Math/UnrealMathUtility.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "ActorPool.h"
 
 
 // Sets default values
@@ -62,6 +63,12 @@ void ATile::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+void ATile::SetPool(UActorPool* InPool)
+{
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(InPool->GetName()));
+	Pool = InPool;
 }
 
 // Called every frame
