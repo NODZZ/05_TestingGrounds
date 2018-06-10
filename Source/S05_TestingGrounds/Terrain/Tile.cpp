@@ -20,9 +20,9 @@ ATile::ATile()
 	MaxExtent = FVector(4000, 2000, 0);
 }
 
-void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
+void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, FActorSpawnInfoStruct SpawnInfo)
 {
-	TArray<FSpawnPosition> SpawnPositions = RandomSpawnPositions(MinSpawn, MaxSpawn, Radius, MinScale, MaxScale);
+	TArray<FSpawnPosition> SpawnPositions = RandomSpawnPositions(SpawnInfo.MinSpawn, SpawnInfo.MaxSpawn, SpawnInfo.Radius, SpawnInfo.MinScale, SpawnInfo.MaxScale);
 	for(FSpawnPosition SpawnPosition : SpawnPositions)
 	{
 		PlaceActor(ToSpawn, SpawnPosition);
@@ -65,7 +65,7 @@ bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
 	return false;
 }
 
-void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition SpawnPosition)
+void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnPosition)
 {
 		AActor* Spawned = GetWorld()->SpawnActor<AActor>(ToSpawn);
 		Spawned->SetActorRelativeLocation(SpawnPosition.Location);

@@ -11,9 +11,44 @@ struct FSpawnPosition
 {
 	GENERATED_USTRUCT_BODY()
 
+	UPROPERTY()
 	FVector Location;
+
+	UPROPERTY()
 	float Rotation;
+
+	UPROPERTY()
 	float Scale;
+};
+
+USTRUCT(BlueprintType)
+struct FActorSpawnInfoStruct
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	int MinSpawn;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	int MaxSpawn;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float MinScale;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float MaxScale;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float Radius;
+
+	FActorSpawnInfoStruct()
+	{
+		MinSpawn = 1;
+		MaxSpawn = 1;
+		MinScale = 1;
+		MaxScale = 1;
+		Radius = 500;
+	}
 };
 
 class UActorPool;
@@ -28,7 +63,7 @@ public:
 	ATile();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500, float MinScale = 1, float MaxScale = 1);
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, FActorSpawnInfoStruct SpawnInfo);
 
 protected:
 	// Called when the game starts or when spawned
@@ -59,7 +94,7 @@ private:
 
 	bool FindEmptyLocation(FVector& OutLocation, float Radius);
 
-	void PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition SpawnPosition);
+	void PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnPosition);
 
 	bool CanSpawnAtLocation(FVector Location, float Radius);
 	
