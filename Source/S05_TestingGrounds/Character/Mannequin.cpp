@@ -85,7 +85,6 @@ void AMannequin::UnPossessed() {
 		UE_LOG(LogTemp, Error, TEXT("Gun is not available"))
 			return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Gun re-attached"))
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint_0"));
 }
 
